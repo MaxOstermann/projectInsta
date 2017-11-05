@@ -13,7 +13,7 @@ def reg(request):
 
     if request.method == "POST" and form.is_valid():
         form.save()
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect('http://127.0.0.1:8000/insta/uspeh')
 
     return render(request, 'insta/reg.html', {"form": form})
 
