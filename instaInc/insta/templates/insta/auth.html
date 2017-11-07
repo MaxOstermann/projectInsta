@@ -1,0 +1,12 @@
+{% load static %}
+
+{% block content %}
+  <form method="post">
+    {% csrf_token %}
+    <input type="text" name="username">
+    <input type="text" name="password">
+    <button type="submit">Upload</button>
+  </form>
+
+  <p><a href="{% url 'insta:ura' %}">Return to home</a></p>
+{% endblock %}
