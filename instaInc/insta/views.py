@@ -1,11 +1,6 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
-from django.http import Http404
-from django.urls import reverse
-from django.views import generic
 from .forms import *
-import datetime
-from django.utils import timezone
 
 
 def reg(request):
@@ -16,6 +11,17 @@ def reg(request):
         return HttpResponseRedirect('uspeh')
 
     return render(request, 'insta/reg.html', {"form": form})
+
+
+def profile(request):
+    m = InstaUser.objects.get(pk=request.session['member_id'])
+    context = {
+        'id' : m.id,
+        'nickname_user': m.nickname_user,
+        'email_user': m.email_user,
+        'image_id' : m.image_id.url
+    }
+    return render(request, 'insta/profile.html', context)
 
 
 def uspeh(request):
