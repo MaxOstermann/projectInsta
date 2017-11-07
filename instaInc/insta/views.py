@@ -9,11 +9,11 @@ from django.utils import timezone
 
 
 def reg(request):
-    form = OrderForm(request.POST or None)
+    form = OrderForm(request.POST or None, request.FILES or None)
 
     if request.method == "POST" and form.is_valid():
         form.save()
-        return HttpResponseRedirect('http://127.0.0.1:8000/insta/uspeh')
+        return HttpResponseRedirect('uspeh')
 
     return render(request, 'insta/reg.html', {"form": form})
 

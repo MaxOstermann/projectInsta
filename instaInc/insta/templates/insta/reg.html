@@ -10,7 +10,7 @@
 
 {# Display a form #}
 
-<form action="" method="post" class="form">
+<form enctype="multipart/form-data" novalidate="" action="" method="post" class="form">
   {% csrf_token %}
   {% bootstrap_form form %}
   {% buttons %}

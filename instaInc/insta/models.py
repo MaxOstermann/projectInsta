@@ -6,7 +6,7 @@ class InstaUser(models.Model):
     nickname_user = models.CharField(max_length=100, unique=True)
     email_user = models.CharField(max_length=100)
     password = models.CharField(max_length=100)
-    image_id = models.ImageField(blank=True)
+    image_id = models.ImageField(blank=True, upload_to="insta/photos")
 
     def __str__(self):
         return self.nickname_user
