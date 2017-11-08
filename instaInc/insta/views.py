@@ -13,6 +13,22 @@ def reg(request):
     return render(request, 'insta/reg.html', {"form": form})
 
 
+def addphoto(request):
+    if request.session.get('member_id', None):
+        m = InstaUser.objects.get(pk=request.session['member_id'])
+        form = PhotoForm(request.POST or None, request.FILES or None, initial={
+                             "created_by": m.id
+                         })
+        form.fields['created_by'].widget = forms.HiddenInput()
+        if request.method == "POST" and form.is_valid():
+            form.save()
+            return HttpResponseRedirect('uspeh')
+
+        return render(request, 'insta/addphoto.html', {"form": form, "user": m.nickname_user})
+    else:
+        return HttpResponse("Чтобы выложить фото, зайдите на сайт")
+
+
 def profile(request):
     m = InstaUser.objects.get(pk=request.session['member_id'])
     context = {
