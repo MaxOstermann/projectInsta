@@ -13,3 +13,9 @@ class PhotoForm(forms.ModelForm):
     class Meta:
         model = Images
         fields = ["id", "description", "image_id", "created_by"]
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comments
+        fields = ["publication_id", "date", "sender_id", "text"]

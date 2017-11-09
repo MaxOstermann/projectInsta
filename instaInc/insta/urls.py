@@ -6,8 +6,10 @@ from . import views
 
 app_name = 'insta'
 urlpatterns = [
-    url(r'^$', views.reg, name='reg'),
+    url(r'^$', views.home, name='home'),
+    url(r'^reg/', views.reg, name='reg'),
     url(r'^addphoto/', views.addphoto, name='addphoto'),
+    url(r'^photo/(?P<idph>.+)/$', views.photo, name='photo'),
     url(r'^profile/', views.profile, name='profile'),
     url(r'^auth/', views.login, name='login'),
     url(r'^lout/', views.lout, name='lout'),

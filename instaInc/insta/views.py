@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from .forms import *
+import datetime
+from django.utils import timezone
 
 
 def reg(request):
@@ -30,14 +32,57 @@ def addphoto(request):
 
 
 def profile(request):
-    m = InstaUser.objects.get(pk=request.session['member_id'])
+    if request.session.get('member_id', None):
+        m = InstaUser.objects.get(pk=request.session['member_id'])
+        context = {
+            'id' : m.id,
+            'nickname_user': m.nickname_user,
+            'email_user': m.email_user,
+            'image_id' : m.image_id.url
+        }
+        return render(request, 'insta/profile.html', context)
+    else:
+        return HttpResponse("Чтобы посмотреть свою страницу, зайдите на сайт")
+
+
+def photo(request, idph):
+    if request.session.get('member_id', None):
+        m = Images.objects.get(pk=int(idph))
+        form = CommentForm(request.POST or None, request.FILES or None, initial={
+                             "publication_id": m.id,
+                             "date" : timezone.now() - datetime.timedelta(days=1),
+                             "sender_id" : m.created_by.id,
+
+                         })
+        form.fields['sender_id'].widget = forms.HiddenInput()
+        form.fields['publication_id'].widget = forms.HiddenInput()
+        form.fields['date'].widget = forms.HiddenInput()
+        if request.method == "POST" and form.is_valid():
+            form.save()
+        create = InstaUser.objects.get(pk=m.created_by.id).nickname_user
+        context = {
+            'id' : m.id,
+            'created_by': create,
+            'created_at': m.created_at,
+            'image_id' : m.image_id.url,
+            'form' : form,
+        }
+        try:
+            com = Comments.objects.filter(publication_id= m.id)[:5]
+            context['comments'] = com
+        except Comments.DoesNotExist:
+            True
+
+        return render(request, 'insta/photo.html', context)
+    else:
+        return HttpResponse("Чтобы посмотреть фото, зайдите на сайт")
+
+
+def home(request):
     context = {
-        'id' : m.id,
-        'nickname_user': m.nickname_user,
-        'email_user': m.email_user,
-        'image_id' : m.image_id.url
+        'images': Images.objects.order_by('created_at')[:5]
     }
-    return render(request, 'insta/profile.html', context)
+    return render(request, 'insta/home.html', context)
 
 
 def uspeh(request):

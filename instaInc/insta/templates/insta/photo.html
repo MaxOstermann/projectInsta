@@ -1,0 +1,45 @@
+{# Load the tag library #}
+{% load bootstrap3 %}
+{% load static %}
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+
+{% block content %}
+
+    <label>image:</label>
+    <img height="150" width=auto src="{{ image_id }}">
+    <label>id:</label>
+    <h2>{{ id }}</h2>
+    <label>nickname:</label>
+    <h2>{{ created_by }}</h2>
+    <label>date:</label>
+    <h2>{{ created_at }}</h2>
+
+    <h1>Комментарии:</h1>
+
+{% for comm in comments %}
+
+    <h3>{{ comm.sender_id.nickname_user }}</h3>
+    <h3>{{ comm.text }}</h3>
+    <br>
+    <br>
+
+{% endfor %}
+
+<form enctype="multipart/form-data" novalidate="" action="" method="post" class="form">
+  {% csrf_token %}
+  {% bootstrap_form form %}
+  {% buttons %}
+  <button type="submit" class="btn btn-primary">
+    {% bootstrap_icon "star" %} Submit
+  </button>
+  {% endbuttons %}
+</form>
+
+  <p><a href="{% url 'insta:ura' %}">Return to home</a></p>
+{% endblock %}
