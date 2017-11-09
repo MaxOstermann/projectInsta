@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from .forms import *
 import datetime
 from django.utils import timezone
+from django.core.urlresolvers import reverse
 
 
 def reg(request):
@@ -24,7 +25,7 @@ def addphoto(request):
         form.fields['created_by'].widget = forms.HiddenInput()
         if request.method == "POST" and form.is_valid():
             form.save()
-            return HttpResponseRedirect('uspeh')
+            return HttpResponseRedirect(reverse('insta:ura'))
 
         return render(request, 'insta/addphoto.html', {"form": form, "user": m.nickname_user})
     else:
@@ -45,22 +46,23 @@ def profile(request):
         return HttpResponse("Чтобы посмотреть свою страницу, зайдите на сайт")
 
 
+def makelike(request, idph):
+    if request.session.get('member_id', None):
+        m = Images.objects.get(pk=int(idph))
+        like = Likes(picture=m, created=timezone.now() - datetime.timedelta(days=1),
+                     sender_id=InstaUser.objects.get(pk=request.session['member_id']))
+        like.save()
+    return HttpResponseRedirect(reverse('insta:photo', kwargs={'idph': idph}))
+
+
 def photo(request, idph):
     if request.session.get('member_id', None):
-        liik = 0
         m = Images.objects.get(pk=int(idph))
-        try:
-            if "" != request.POST['like']:
-                like = Likes(picture=m.id, created= timezone.now() - datetime.timedelta(days=1), sender_id= InstaUser.objects.get(pk=request.session['member_id']).id)
-                liik = 1
-                like.save()
-        except:
-            True
+        liik = len(Likes.objects.filter(picture=m))
         form = CommentForm(request.POST or None, request.FILES or None, initial={
                              "publication_id": m.id,
                              "date" : timezone.now() - datetime.timedelta(days=1),
                              "sender_id" : InstaUser.objects.get(pk=request.session['member_id']).id,
-
                          })
         form.fields['sender_id'].widget = forms.HiddenInput()
         form.fields['publication_id'].widget = forms.HiddenInput()
@@ -80,7 +82,7 @@ def photo(request, idph):
             com = Comments.objects.filter(publication_id=m.id)[:5]
             context['comments'] = com
         except Comments.DoesNotExist:
-            True
+            pass
 
         return render(request, 'insta/photo.html', context)
     else:

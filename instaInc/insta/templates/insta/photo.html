@@ -11,9 +11,6 @@
 
 {% block content %}
       <script type="text/javascript">
-          submitForms1 = function(){
-              document.getElementById("form1").submit();
-              }
           submitForms = function(){
               document.getElementById("form").submit();
               }
@@ -29,12 +26,10 @@
     <h2>{{ created_at }}</h2>
 
     <h1> Нравится: {{ l_num }}</h1>
-  <form method="post" action="" id = "form1" >
-    {% csrf_token %}
-      <input type="text" name="like" value="ilike">
-    <button type="button"  onclick="submitForms1()">Мне нравится</button>
-  </form>
 
+    <form action="{% url 'insta:makelike' id %}" method="get">
+  <button>Мне нравится</button>
+    </form>
 
     <h1>Комментарии:</h1>
 
