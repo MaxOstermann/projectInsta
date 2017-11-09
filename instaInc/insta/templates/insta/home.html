@@ -15,6 +15,7 @@
 
     <img height="150" width=auto src="{{ im.image_id.url }}">
     <li><a href="{% url 'insta:photo' im.id %}">{{ im.description }}</a></li>
+    <p> {{ im.created_at }} </p>
     <br>
     <br>
 

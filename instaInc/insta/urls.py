@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^$', views.home, name='home'),
     url(r'^reg/', views.reg, name='reg'),
     url(r'^addphoto/', views.addphoto, name='addphoto'),
+    url(r'^dele/(?P<idph>.+)/$', views.dele, name='dele'),
     url(r'^makelike/(?P<idph>.+)/$', views.makelike, name='makelike'),
     url(r'^photo/(?P<idph>.+)/$', views.photo, name='photo'),
     url(r'^profile/', views.profile, name='profile'),

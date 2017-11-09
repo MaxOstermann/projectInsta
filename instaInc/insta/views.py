@@ -16,6 +16,12 @@ def reg(request):
     return render(request, 'insta/reg.html', {"form": form})
 
 
+def dele(request, idph):
+    if request.session.get('member_id', None):
+        m = Images.objects.get(pk=int(idph))
+        m.delete()
+    return HttpResponseRedirect(reverse('insta:home'))
+
 def addphoto(request):
     if request.session.get('member_id', None):
         m = InstaUser.objects.get(pk=request.session['member_id'])

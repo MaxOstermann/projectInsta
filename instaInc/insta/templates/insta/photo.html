@@ -27,9 +27,13 @@
 
     <h1> Нравится: {{ l_num }}</h1>
 
-    <form action="{% url 'insta:makelike' id %}" method="get">
-  <button>Мне нравится</button>
-    </form>
+  <form action="{% url 'insta:makelike' id %}" method="get">
+    <button>Мне нравится</button>
+  </form>
+
+  <form action="{% url 'insta:dele' id %}" method="get">
+    <button>Удалить запись !</button>
+  </form>
 
     <h1>Комментарии:</h1>
 
