@@ -26,4 +26,10 @@ class Comments(models.Model):
     date = models.DateTimeField()
     sender_id = models.ForeignKey(InstaUser, on_delete=models.CASCADE)
     text = models.TextField()
+
+
+class Likes(models.Model):
+    picture = models.ForeignKey(Images, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+    sender_id = models.ForeignKey(InstaUser, on_delete=models.CASCADE)
 # Create your models here.

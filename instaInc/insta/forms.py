@@ -1,4 +1,4 @@
-from .models import InstaUser, Images, Comments
+from .models import InstaUser, Images, Comments, Likes
 from django import forms
 from django.contrib.admin import widgets
 
@@ -19,3 +19,4 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comments
         fields = ["publication_id", "date", "sender_id", "text"]
+

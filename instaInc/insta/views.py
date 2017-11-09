@@ -47,11 +47,19 @@ def profile(request):
 
 def photo(request, idph):
     if request.session.get('member_id', None):
+        liik = 0
         m = Images.objects.get(pk=int(idph))
+        try:
+            if "" != request.POST['like']:
+                like = Likes(picture=m.id, created= timezone.now() - datetime.timedelta(days=1), sender_id= InstaUser.objects.get(pk=request.session['member_id']).id)
+                liik = 1
+                like.save()
+        except:
+            True
         form = CommentForm(request.POST or None, request.FILES or None, initial={
                              "publication_id": m.id,
                              "date" : timezone.now() - datetime.timedelta(days=1),
-                             "sender_id" : m.created_by.id,
+                             "sender_id" : InstaUser.objects.get(pk=request.session['member_id']).id,
 
                          })
         form.fields['sender_id'].widget = forms.HiddenInput()
@@ -66,9 +74,10 @@ def photo(request, idph):
             'created_at': m.created_at,
             'image_id' : m.image_id.url,
             'form' : form,
+            'l_num': liik,
         }
         try:
-            com = Comments.objects.filter(publication_id= m.id)[:5]
+            com = Comments.objects.filter(publication_id=m.id)[:5]
             context['comments'] = com
         except Comments.DoesNotExist:
             True
