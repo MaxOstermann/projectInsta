@@ -1,30 +1,81 @@
+{% load static %}
 <html>
     <head>
-        <title>{% block head_title %}Insta{% endblock %}</title>
-        <style>
-            BODY {
-                font-family: Arial, Verdana, Helvetica, sans-serif;
-                font-size: 90%;
-                background: rgb(254, 254, 254);
-                border: 4px black;
-                margin: 50px;
-            }
-            h1,h2,h3,h4,p,label,input{
-                color: rgb(0, 0, 0);
-            }
-            .elem{
-                background: rgb(150, 150, 255);
-                border: rgba(0, 0, 255, 0.44);
-                margin: 50px;
-                width: 300px;
-                height: auto;
-            }
-        </style>
+        <title>{% block head_title %}CatoGrapher{% endblock %}</title>
+        <meta charset="utf-8">
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static "css/master.css" %}" media="screen" title="no title" charset="utf-8">
+
     </head>
     <body>
-        <h1>{% block title %}Insta{% endblock %}</h1>
-        {% block content %}
+    <header class="header">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-1"> </div>
+          <div class="col-md-1 logo">
+            <img src="{% static  "images/catface.jpg" %}" width="80" height="80" />
+          </div>
+          <div class="col-md-3">
+            <h1 class="PostmanLogo"><span id="P">C</span>ato<span id="P">G</span>rapher</h1>
+          </div>
+          <div class="col-md-3">
+            <nav class="menu">
+              <ul class="nav nav-pills">
+                  <form class="search">
+                     <input type="text" size="100%" class="form-control" placeholder="Поиск">
+                  </form>
+              </ul>
+            </nav>
+          </div>
+          <div class="col-md-3">
+            <nav class="icons">
+              <ul class="nav nav-pills">
+                  <a href="#" class="MenuLink"><img src="{% static  "images/track.jpg" %}" width="50" height="50" /></a>
+                  <a href="#" class="MenuLink"><img src="{% static  "images/heart.jpg" %}" width="50" height="50" /></a>
+                  <a href="#" class="MenuLink"><img src="{% static  "images/ball.jpg" %}" width="40" height="40" /></a>
+              </ul>
+            </nav>
+          </div>
 
-        {% endblock %}
+        </div>
+
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="welcome">
+        <p>
+          Информация о пользователе
+        </p>
+      </div>
+      <div class="top">
+        <div class="rd page-header">
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="item">
+              <img src="images/top.jpg" />
+                {% block content %}
+
+                {% endblock %}
+
+            </div>
+          </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
     </body>
 </html>

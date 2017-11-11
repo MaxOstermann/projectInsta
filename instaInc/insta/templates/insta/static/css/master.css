@@ -1,0 +1,105 @@
+
+header.header {
+  background: #fff;
+  border-bottom: 1px solid #ccc;
+  width: 100%;
+  min-height: 59px;
+}
+body {
+  background-color: #FAFAFA;
+}
+
+.PostmanLogo #P {
+  color: #f43;
+  font-weight: bold;
+}
+
+.logo {
+  padding-left: 10px;
+}
+
+nav.menu, nav.menu-category {
+  margin-top: 20px;
+}
+
+a.MenuLink {
+  color: #000;
+}
+.nav>li>a:focus, .nav>li>a:hover {
+    text-decoration: none;
+    background-color: #fff;
+    color: #f43;
+}
+
+.menu ul.nav.nav-pills {
+  float: right;
+}
+
+.menu .search {
+  margin-top: 5px;
+}
+
+.icons {
+  margin-top: 3px;
+}
+
+.welcome p {
+  font-weight: 200;
+  border: 0;
+  font-family: "Nitti Light", sans-serif;
+  padding: 0 100px 0 100px;
+  margin-bottom: 70px;
+  margin-top: 70px;
+  font-size: 40px;
+  line-height: 45px;
+}
+
+.item {
+  padding-bottom: 10px;
+  border: 1px solid #ccc;
+  background: #fff;
+}
+.item .name {
+  font-weight: 200;
+  color: #f43;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.item .name .price {
+  float: right;
+  font-weight: 300;
+}
+.item img {
+  max-width: 358px;
+  max-width: 358px;
+}
+.item .btn-place {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.red-btn {
+  border-radius: 0;
+}
+.red-btn:hover {
+  border-radius: 0;
+  border-color: #f43;
+  color: #fff;
+  background: #f43;
+}
+
+.rd {
+  border-color: #000;
+  border-width: 5px;
+}
+
+.rd h1 {
+  font-weight: 800;
+}
+
+.top .row {
+  margin-bottom: 30px;
+}
+
+.footer {
+  margin-top: 50px;
+}
