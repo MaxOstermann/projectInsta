@@ -11,7 +11,7 @@ def reg(request):
 
     if request.method == "POST" and form.is_valid():
         form.save()
-        return HttpResponseRedirect('uspeh')
+        return HttpResponseRedirect(reverse('insta:login'))
 
     return render(request, 'insta/reg.html', {"form": form})
 
