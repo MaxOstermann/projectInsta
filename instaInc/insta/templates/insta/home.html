@@ -1,4 +1,6 @@
 {# Load the tag library #}
+{% extends 'insta/base.html' %}
+
 {% load bootstrap3 %}
 {% load static %}
 {# Load CSS and JavaScript #}
@@ -8,16 +10,18 @@
 {# Display django.contrib.messages as Bootstrap alerts #}
 {% bootstrap_messages %}
 
+{% block title %}Лента новостей:{% endblock %}
 
 {% block content %}
 
 {% for im in images %}
-
-    <img height="150" width=auto src="{{ im.image_id.url }}">
-    <li><a href="{% url 'insta:photo' im.id %}">{{ im.description }}</a></li>
-    <p> {{ im.created_at }} </p>
-    <br>
-    <br>
+    <div class="elem">
+        <img width="300" height=auto src="{{ im.image_id.url }}">
+        <li><a href="{% url 'insta:photo' im.id %}">{{ im.description }}</a></li>
+        <p> {{ im.created_at }} </p>
+        <br>
+        <br>
+    </div>
 
 {% endfor %}
 
