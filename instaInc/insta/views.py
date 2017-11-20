@@ -17,8 +17,8 @@ def reg(request):
 
 
 def dele(request, idph):
-    if request.session.get('member_id', None):
-        m = Images.objects.get(pk=int(idph))
+    if request.session.get('member_id', None) and Images.objects.get(pk=int(idph)).created_by.id == request.session['member_id']:
+        m = Images.objects.get(pk=int(idph))    
         m.delete()
     return HttpResponseRedirect(reverse('insta:home'))
 
@@ -55,20 +55,39 @@ def profile(request):
 def makelike(request, idph):
     if request.session.get('member_id', None):
         m = Images.objects.get(pk=int(idph))
-        like = Likes(picture=m, created=timezone.now() - datetime.timedelta(days=1),
-                     sender_id=InstaUser.objects.get(pk=request.session['member_id']))
-        like.save()
+        us = InstaUser.objects.get(pk=request.session['member_id'])
+        if Likes.objects.filter(
+            picture=m,
+            sender_id=us
+        ).exists():
+            lokas = Likes.objects.filter(
+                picture=m,
+                sender_id=us
+            )[0]
+            lokas.delete()
+        else:
+            like = Likes(picture=m, created=timezone.now() - datetime.timedelta(days=1),
+                         sender_id=InstaUser.objects.get(pk=request.session['member_id']))
+            like.save()
     return HttpResponseRedirect(reverse('insta:photo', kwargs={'idph': idph}))
 
 
 def photo(request, idph):
     if request.session.get('member_id', None):
         m = Images.objects.get(pk=int(idph))
+        us = InstaUser.objects.get(pk=request.session['member_id'])
+        if Likes.objects.filter(
+                picture=m,
+                sender_id=us
+        ).exists():
+            text_button = "Мне больше не нравится"
+        else:
+            text_button = "Мне нравится"
         liik = len(Likes.objects.filter(picture=m))
         form = CommentForm(request.POST or None, request.FILES or None, initial={
                              "publication_id": m.id,
                              "date" : timezone.now() - datetime.timedelta(days=1),
-                             "sender_id" : InstaUser.objects.get(pk=request.session['member_id']).id,
+                             "sender_id" : us.id,
                          })
         form.fields['sender_id'].widget = forms.HiddenInput()
         form.fields['publication_id'].widget = forms.HiddenInput()
@@ -83,6 +102,7 @@ def photo(request, idph):
             'image_id' : m.image_id.url,
             'form' : form,
             'l_num': liik,
+            'text_button': text_button,
         }
         try:
             com = Comments.objects.filter(publication_id=m.id)[:5]

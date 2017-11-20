@@ -31,7 +31,7 @@
     <h1> Нравится: {{ l_num }}</h1>
 </div>
   <form action="{% url 'insta:makelike' id %}" method="get">
-    <button>Мне нравится</button>
+    <button>{{ text_button }}</button>
   </form>
 
   <form action="{% url 'insta:dele' id %}" method="get">
