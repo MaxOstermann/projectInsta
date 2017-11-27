@@ -27,6 +27,22 @@ def comments_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['GET', 'POST'])
+def profile_list(request):
+
+    if request.method == 'GET':
+        users = InstaUser.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
+
+    if request.method == 'POST':
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response('OK', status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 @api_view(['POST'])
 def login_api(request):
     if request.method == "POST":
@@ -39,6 +55,16 @@ def login_api(request):
                 return Response("Неправильный пароль.")
         except InstaUser.DoesNotExist:
             return Response("Ваши логин и пароль не соответствуют.")
+
+
+@api_view(['GET'])
+def lout_api(request):
+    try:
+        del request.session['member_id']
+    except KeyError:
+        pass
+
+    return Response("Вы вышли.")
 
 
 def reg(request):

@@ -14,9 +14,11 @@ urlpatterns = [
     url(r'^makelike/(?P<idph>.+)/$', views.makelike, name='makelike'),
     url(r'^photo/(?P<idph>.+)/$', views.photo, name='photo'),
     url(r'^profile/', views.profile, name='profile'),
+    url(r'^profile_list_api/', views.profile_list, name='profile_list_api'), #API
     url(r'^auth/', views.login, name='login'),
     url(r'^auth_api/', views.login_api, name='login_api'), #API
     url(r'^lout/', views.lout, name='lout'),
+    url(r'^lout_api/', views.lout_api, name='lout_api'), #API
     url(r'^exit/', views.log_out, name='exit'),
     url(r'^uspeh/', views.uspeh, name='ura'),
 ]
