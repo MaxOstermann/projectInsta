@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'insta.apps.InstaConfig',
     'bootstrap3',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

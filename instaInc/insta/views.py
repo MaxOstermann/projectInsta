@@ -4,6 +4,41 @@ from .forms import *
 import datetime
 from django.utils import timezone
 from django.core.urlresolvers import reverse
+from .serializers import *
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+
+
+@api_view(['GET', 'POST'])
+def comments_list(request):
+
+    if request.method == 'GET':
+        comments = Comments.objects.all()
+        serializer = CommentsSerializer(comments, many=True)
+        return Response(serializer.data)
+
+    if request.method == 'POST':
+        us = InstaUser.objects.get(pk=request.session['member_id'])
+        serializer = CommentsSerializer2(data=request.data)
+        if serializer.is_valid():
+            serializer.save(sender_id=us,date=timezone.now() - datetime.timedelta(days=1))
+            return Response('OK', status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def login_api(request):
+    if request.method == "POST":
+        try:
+            m = InstaUser.objects.get(nickname_user=request.data['username'])
+            if m.password == request.data['password']:
+                request.session['member_id'] = m.id
+                return Response("Вы авторизованы.")
+            else:
+                return Response("Неправильный пароль.")
+        except InstaUser.DoesNotExist:
+            return Response("Ваши логин и пароль не соответствуют.")
 
 
 def reg(request):
@@ -67,7 +102,7 @@ def makelike(request, idph):
             lokas.delete()
         else:
             like = Likes(picture=m, created=timezone.now() - datetime.timedelta(days=1),
-                         sender_id=InstaUser.objects.get(pk=request.session['member_id']))
+                         sender_id=us)
             like.save()
     return HttpResponseRedirect(reverse('insta:photo', kwargs={'idph': idph}))
 
@@ -105,7 +140,7 @@ def photo(request, idph):
             'text_button': text_button,
         }
         try:
-            com = Comments.objects.filter(publication_id=m.id)[:5]
+            com = Comments.objects.filter(publication_id=m.id)#[:5]
             context['comments'] = com
         except Comments.DoesNotExist:
             pass
