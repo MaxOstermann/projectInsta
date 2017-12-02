@@ -32,4 +32,10 @@ class Likes(models.Model):
     picture = models.ForeignKey(Images, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     sender_id = models.ForeignKey(InstaUser, on_delete=models.CASCADE)
+
+
+class Follows(models.Model):
+        man = models.ForeignKey(InstaUser, on_delete=models.CASCADE, related_name='user_im')
+        created = models.DateTimeField(auto_now_add=True)
+        follow_to = models.ForeignKey(InstaUser, on_delete=models.CASCADE, related_name='user_out')
 # Create your models here.

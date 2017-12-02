@@ -23,7 +23,7 @@
     <label>id:</label>
     <h2>{{ id }}</h2>
     <label>nickname:</label>
-    <h2>{{ created_by }}</h2>
+    <a href="{% url 'insta:profile_page' created_id %}"><h1>{{ created_by }}</h1></a>
     <label>date:</label>
     <h2>{{ created_at }}</h2>
 </div>
@@ -42,7 +42,7 @@
 
 {% for comm in comments %}
 <div class="elem">
-    <h3>{{ comm.sender_id.nickname_user }}</h3>
+    <a href="{% url 'insta:profile_page' comm.sender_id.id %}">{{ comm.sender_id.nickname_user }}</a>
     <h3>{{ comm.text }}</h3>
     <br>
     <br>

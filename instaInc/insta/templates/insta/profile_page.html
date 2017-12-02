@@ -1,0 +1,37 @@
+{% extends 'insta/base.html' %}
+{# Load the tag library #}
+{% load bootstrap3 %}
+{% load static %}
+
+{% block content %}
+    <div class="elem">
+        <h1> Подписки: {{ man_num }}</h1>
+        <h1> Подписчики: {{ follow_to_num }}</h1>
+    </div>
+    <form action="{% url 'insta:make_follow' id %}" method="get">
+        <button>{{ text_button }}</button>
+    </form>
+    <label>id:</label>
+    <h1>{{ id }}</h1>
+    <label>nickname:</label>
+    <h1>{{ nickname_user }}</h1>
+    <label>e-mail:</label>
+    <h1>{{ email_user }}</h1>
+    <label>image:</label>
+    <img height="150" width=auto src="{{ image_id }}">
+
+  <p><a href="{% url 'insta:ura' %}">Return to home</a></p>
+
+    <h1> Публикации: </h1>
+
+    {% for im in images %}
+        <div class="elem">
+            <img width="300" height=auto src="{{ im.image_id.url }}">
+            <li><a href="{% url 'insta:photo' im.id %}">{{ im.description }}</a></li>
+            <p> {{ im.created_at }} </p>
+            <br>
+            <br>
+        </div>
+    {% endfor %}
+
+{% endblock %}

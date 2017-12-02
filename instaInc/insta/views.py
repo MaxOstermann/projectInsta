@@ -133,6 +133,56 @@ def makelike(request, idph):
     return HttpResponseRedirect(reverse('insta:photo', kwargs={'idph': idph}))
 
 
+def make_follow(request, idph):
+    if request.session.get('member_id', None):
+        m = InstaUser.objects.get(pk=int(idph))
+        us = InstaUser.objects.get(pk=request.session['member_id'])
+        if Follows.objects.filter(
+            man=us,
+            follow_to=m
+        ).exists():
+            follow = Follows.objects.filter(
+                man=us,
+                follow_to=m
+            )[0]
+            follow.delete()
+        else:
+            follow = Follows(man=us, created=timezone.now() - datetime.timedelta(days=1),
+                             follow_to=m)
+            follow.save()
+    return HttpResponseRedirect(reverse('insta:profile_page', kwargs={'idph': idph}))
+
+
+def profile_page(request, idph):
+    if request.session.get('member_id', None):
+        m = InstaUser.objects.get(pk=int(idph))
+        us = InstaUser.objects.get(pk=request.session['member_id'])
+        if Follows.objects.filter(
+                man=us,
+                follow_to=m
+        ).exists():
+            text_button = "Отписаться"
+        else:
+            text_button = "Подписаться"
+        if m==us:
+            text_button = "Так это же я сам!"
+        man_num = len(Follows.objects.filter(man=m))
+        follow_to_num = len(Follows.objects.filter(follow_to=m))
+        m = InstaUser.objects.get(pk=int(idph))
+        context = {
+            'id': m.id,
+            'nickname_user': m.nickname_user,
+            'email_user': m.email_user,
+            'image_id': m.image_id.url,
+            'text_button': text_button,
+            'man_num': man_num,
+            'follow_to_num': follow_to_num,
+            'images': Images.objects.filter(created_by=m)[:5]
+        }
+        return render(request, 'insta/profile_page.html', context)
+
+
+
 def photo(request, idph):
     if request.session.get('member_id', None):
         m = Images.objects.get(pk=int(idph))
@@ -156,9 +206,11 @@ def photo(request, idph):
         if request.method == "POST" and form.is_valid():
             form.save()
         create = InstaUser.objects.get(pk=m.created_by.id).nickname_user
+        send_user = InstaUser.objects.get(pk=m.created_by.id).id
         context = {
             'id' : m.id,
             'created_by': create,
+            'created_id': send_user,
             'created_at': m.created_at,
             'image_id' : m.image_id.url,
             'form' : form,
