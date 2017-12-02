@@ -12,9 +12,11 @@
 {# Display a form #}
 {% block content %}
 <form enctype="multipart/form-data" novalidate="" action="" method="post" class="form">
-  {% csrf_token %}
-  {% bootstrap_form form %}
-  {% buttons %}
+  <div class="form-container">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    {% buttons %}
+  </div>
   <button type="submit" class="btn btn-primary">
     {% bootstrap_icon "star" %} Submit
   </button>

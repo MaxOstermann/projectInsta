@@ -102,15 +102,7 @@ def addphoto(request):
 def profile(request):
     if request.session.get('member_id', None):
         m = InstaUser.objects.get(pk=request.session['member_id'])
-        context = {
-            'id' : m.id,
-            'nickname_user': m.nickname_user,
-            'email_user': m.email_user,
-            'image_id' : m.image_id.url
-        }
-        return render(request, 'insta/profile.html', context)
-    else:
-        return HttpResponse("Чтобы посмотреть свою страницу, зайдите на сайт")
+        return HttpResponseRedirect(reverse('insta:profile_page', kwargs={'idph': m.id}))
 
 
 def makelike(request, idph):
@@ -229,8 +221,9 @@ def photo(request, idph):
 
 
 def home(request):
+    imgs = Images.objects.order_by('created_at')[:5]
     context = {
-        'images': Images.objects.order_by('created_at')[:5]
+        'images': imgs,
     }
     return render(request, 'insta/home.html', context)
 

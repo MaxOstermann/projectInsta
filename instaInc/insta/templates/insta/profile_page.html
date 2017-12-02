@@ -4,23 +4,31 @@
 {% load static %}
 
 {% block content %}
-    <div class="elem">
-        <h1> Подписки: {{ man_num }}</h1>
-        <h1> Подписчики: {{ follow_to_num }}</h1>
-    </div>
-    <form action="{% url 'insta:make_follow' id %}" method="get">
-        <button>{{ text_button }}</button>
-    </form>
-    <label>id:</label>
-    <h1>{{ id }}</h1>
-    <label>nickname:</label>
-    <h1>{{ nickname_user }}</h1>
-    <label>e-mail:</label>
-    <h1>{{ email_user }}</h1>
-    <label>image:</label>
-    <img height="150" width=auto src="{{ image_id }}">
 
-  <p><a href="{% url 'insta:ura' %}">Return to home</a></p>
+      <div class="welcome">
+        <div class="row">
+          <div class="col-md-1"></div>
+          <div class="col-md-3">
+            <img class="img-circle img-responsive avatar" src="{{ image_id }}" width="300" height="300"/>
+          </div>
+
+          <div class="col-md-5">
+            <p>{{ nickname_user }}</p>
+            <p>{{ email_user }}</p>
+            <p class="subs">Количество подписчиков: <b>{{ man_num }}</b></p>
+            <p class="subs">Количество подписок: <b>{{ follow_to_num }}</b></p>
+          </div>
+
+          <div class="col-md-3">
+            <div class="another">
+              <h2><a href="login.html">Выйти</a></h2>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
 
     <h1> Публикации: </h1>
 

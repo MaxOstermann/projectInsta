@@ -16,48 +16,50 @@
               document.getElementById("form").submit();
               }
       </script>
-<div class="elem">
-    <p>image:</p>
-    <img height="150" width=auto src="{{ image_id }}">
-    <br>
-    <label>id:</label>
-    <h2>{{ id }}</h2>
-    <label>nickname:</label>
-    <a href="{% url 'insta:profile_page' created_id %}"><h1>{{ created_by }}</h1></a>
-    <label>date:</label>
-    <h2>{{ created_at }}</h2>
-</div>
-<div class="elem">
-    <h1> Нравится: {{ l_num }}</h1>
-</div>
-  <form action="{% url 'insta:makelike' id %}" method="get">
-    <button>{{ text_button }}</button>
-  </form>
+<div class="container cata_one_photo">
+    <div class="elem">
+        <a href="{% url 'insta:profile_page' created_id %}"><h1>{{ created_by }}</h1></a>
+        <img height="auto" width="670" src="{{ image_id }}">
+        <p>{{ created_at }}</p>
+    </div>
 
-  <form action="{% url 'insta:dele' id %}" method="get">
-    <button>Удалить запись !</button>
-  </form>
+    <div class="elem">
+        <h3> likes: {{ l_num }}</h3>
+    </div>
+        <div class="row">
+            <div class="col-md-6">
+              <form action="{% url 'insta:makelike' id %}" method="get">
+                <button class="btn btn-default btn-block">{{ text_button }}</button>
+              </form>
+            </div>
+            <div class="col-md-6">
+              <form action="{% url 'insta:dele' id %}" method="get">
+                <button class="btn btn-default btn-block">Удалить запись !</button>
+              </form>
+            </div>
+        </div>
 
-    <h1>Комментарии:</h1>
+        <h3>Комментарии:</h3>
 
-{% for comm in comments %}
-<div class="elem">
-    <a href="{% url 'insta:profile_page' comm.sender_id.id %}">{{ comm.sender_id.nickname_user }}</a>
-    <h3>{{ comm.text }}</h3>
-    <br>
-    <br>
+    {% for comm in comments %}
+        <div class="elem">
+            <a href="{% url 'insta:profile_page' comm.sender_id.id %}">{{ comm.sender_id.nickname_user }}:</a>
+            {{ comm.text }}
+        </div>
+    {% endfor %}
+
+        <br>
+    <div class="elem">
+    <form enctype="multipart/form-data" novalidate="" action=""  method="post" id = "form" class="form">
+      {% csrf_token %}
+      {% bootstrap_form form %}
+      {% buttons %}
+      <button type="button" class="btn btn-primary" onclick="submitForms()">
+        {% bootstrap_icon "star" %} Отправить
+      </button>
+      {% endbuttons %}
+    </form>
+    </div>
+      <p><a href="{% url 'insta:home' %}">Return to home</a></p>
+    {% endblock %}
 </div>
-{% endfor %}
-<div class="elem">
-<form enctype="multipart/form-data" novalidate="" action=""  method="post" id = "form" class="form">
-  {% csrf_token %}
-  {% bootstrap_form form %}
-  {% buttons %}
-  <button type="button" class="btn btn-primary" onclick="submitForms()">
-    {% bootstrap_icon "star" %} Отправить
-  </button>
-  {% endbuttons %}
-</form>
-</div>
-  <p><a href="{% url 'insta:home' %}">Return to home</a></p>
-{% endblock %}
