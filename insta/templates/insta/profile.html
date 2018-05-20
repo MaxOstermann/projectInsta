@@ -1,0 +1,17 @@
+{% extends 'insta/base.html' %}
+{# Load the tag library #}
+{% load bootstrap3 %}
+{% load static %}
+
+{% block content %}
+    <label>id:</label>
+    <h1>{{ id }}</h1>
+    <label>nickname:</label>
+    <h1>{{ nickname_user }}</h1>
+    <label>e-mail:</label>
+    <h1>{{ email_user }}</h1>
+    <label>image:</label>
+    <img height="150" width=auto src="{{ image_id }}">
+
+  <p><a href="{% url 'insta:ura' %}">Return to home</a></p>
+{% endblock %}
