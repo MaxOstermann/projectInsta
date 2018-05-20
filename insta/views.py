@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from .forms import *
 import datetime
 from django.utils import timezone
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from .serializers import *
 from rest_framework import status
 from rest_framework.response import Response

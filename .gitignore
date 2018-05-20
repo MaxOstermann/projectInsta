@@ -1,0 +1,6 @@
+*.iml
+.idea
+*.pyc
+venv
+insta/__pycache__
+instaInc/__pycache__
