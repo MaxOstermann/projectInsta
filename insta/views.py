@@ -113,10 +113,10 @@ def makelike(request, idph):
             picture=m,
             sender_id=us
         ).exists():
-            lokas = Likes.objects.filter(
+            lokas = Likes.objects.get(
                 picture=m,
                 sender_id=us
-            )[0]
+            )
             lokas.delete()
         else:
             like = Likes(picture=m, created=timezone.now() - datetime.timedelta(days=1),
@@ -133,10 +133,10 @@ def make_follow(request, idph):
             man=us,
             follow_to=m
         ).exists():
-            follow = Follows.objects.filter(
+            follow = Follows.objects.get(
                 man=us,
                 follow_to=m
-            )[0]
+            )
             follow.delete()
         else:
             follow = Follows(man=us, created=timezone.now() - datetime.timedelta(days=1),
@@ -149,14 +149,11 @@ def profile_page(request, idph):
     if request.session.get('member_id', None):
         m = InstaUser.objects.get(pk=int(idph))
         us = InstaUser.objects.get(pk=request.session['member_id'])
-        if Follows.objects.filter(
-                man=us,
-                follow_to=m
-        ).exists():
+        if Follows.objects.get(man=us, follow_to=m):
             text_button = "Отписаться"
         else:
             text_button = "Подписаться"
-        if m==us:
+        if m == us:
             text_button = "Так это же я сам!"
         man_num = len(Follows.objects.filter(man=m))
         follow_to_num = len(Follows.objects.filter(follow_to=m))
@@ -172,7 +169,6 @@ def profile_page(request, idph):
             'images': Images.objects.filter(created_by=m)[:5]
         }
         return render(request, 'insta/profile_page.html', context)
-
 
 
 def photo(request, idph):
