@@ -149,7 +149,7 @@ def profile_page(request, idph):
     if request.session.get('member_id', None):
         m = InstaUser.objects.get(pk=int(idph))
         us = InstaUser.objects.get(pk=request.session['member_id'])
-        if Follows.objects.get(man=us, follow_to=m):
+        if Follows.objects.filter(man=us, follow_to=m).exists():
             text_button = "Отписаться"
         else:
             text_button = "Подписаться"
@@ -157,7 +157,6 @@ def profile_page(request, idph):
             text_button = "Так это же я сам!"
         man_num = len(Follows.objects.filter(man=m))
         follow_to_num = len(Follows.objects.filter(follow_to=m))
-        m = InstaUser.objects.get(pk=int(idph))
         context = {
             'id': m.id,
             'nickname_user': m.nickname_user,
