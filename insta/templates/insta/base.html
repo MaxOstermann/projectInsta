@@ -35,9 +35,18 @@
           <div class="col-md-3">
             <nav class="icons">
               <ul class="nav nav-pills">
-                  <li><a href="{% url 'insta:home' %}" class="MenuLink"><img src="{% static  "images/track.jpg" %}"  width="50" height="50" /></a></li>
-                  <li><a href="likes.html" class="MenuLink"><img src="{% static  "images/heart.jpg" %}" height="50" /></a></li>
-                  <li><a href="{% url 'insta:profile' %}" class="MenuLink"><img src="{% static  "images/ball.jpg" %}" width="40" height="40" /></a></li>
+                  <li><a href="{% url 'insta:home' %}" class="MenuLink">
+                      <img src="{% static  "images/track.jpg" %}"  width="50" height="50" />
+                      <h3>home</h3>
+                  </a></li>
+                  <li><a href="likes.html" class="MenuLink">
+                      <img src="{% static  "images/heart.jpg" %}" height="50" />
+                      <h3>likes</h3>
+                  </a></li>
+                  <li><a href="{% url 'insta:profile' %}" class="MenuLink">
+                      <img src="{% static  "images/ball.jpg" %}" width="40" height="40" />
+                      <h3>profile</h3>
+                  </a></li>
               </ul>
             </nav>
           </div>
