@@ -94,7 +94,8 @@ def addphoto(request):
             form.save()
             return HttpResponseRedirect(reverse('insta:ura'))
 
-        return render(request, 'insta/addphoto.html', {"form": form, "user": m.nickname_user})
+        return render(request, 'insta/addphoto.html',
+                      {"form": form, "user": m.nickname_user})
     else:
         return HttpResponse("Чтобы выложить фото, зайдите на сайт")
 
@@ -139,10 +140,13 @@ def make_follow(request, idph):
             )
             follow.delete()
         else:
-            follow = Follows(man=us, created=timezone.now() - datetime.timedelta(days=1),
+            real_time = timezone.now() - datetime.timedelta(days=1)
+            follow = Follows(man=us,
+                             created=real_time,
                              follow_to=m)
             follow.save()
-    return HttpResponseRedirect(reverse('insta:profile_page', kwargs={'idph': idph}))
+    return HttpResponseRedirect(reverse(
+        'insta:profile_page', kwargs={'idph': idph}))
 
 
 def profile_page(request, idph):
