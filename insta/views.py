@@ -102,51 +102,51 @@ def addphoto(request):
 
 def profile(request):
     if request.session.get('member_id', None):
-        m = InstaUser.objects.get(pk=request.session['member_id'])
-        return HttpResponseRedirect(reverse('insta:profile_page', kwargs={'idph': m.id}))
+        user = InstaUser.objects.get(pk=request.session['member_id'])
+        return HttpResponseRedirect(reverse('insta:profile_page', kwargs={'idph': user.id}))
 
 
 def makelike(request, idph):
     if request.session.get('member_id', None):
-        m = Images.objects.get(pk=int(idph))
-        us = InstaUser.objects.get(pk=request.session['member_id'])
+        image = Images.objects.get(pk=int(idph))
+        user = InstaUser.objects.get(pk=request.session['member_id'])
         if Likes.objects.filter(
-            picture=m,
-            sender_id=us
+            picture=image,
+            sender_id=user
         ).exists():
-            lokas = Likes.objects.get(
-                picture=m,
-                sender_id=us
+            like = Likes.objects.get(
+                picture=image,
+                sender_id=user
             )
-            lokas.delete()
+            like.delete()
         else:
-            like = Likes(picture=m, created=timezone.now() - datetime.timedelta(days=1),
-                         sender_id=us)
+            like = Likes(picture=image, created=timezone.now() - datetime.timedelta(days=1),
+                         sender_id=user)
             like.save()
     return HttpResponseRedirect(reverse('insta:photo', kwargs={'idph': idph}))
 
 
-def make_follow(request, idph):
+def make_follow(request, id_user_to_follow):
     if request.session.get('member_id', None):
-        m = InstaUser.objects.get(pk=int(idph))
-        us = InstaUser.objects.get(pk=request.session['member_id'])
+        user_to_follow = InstaUser.objects.get(pk=int(id_user_to_follow))
+        follower = InstaUser.objects.get(pk=request.session['member_id'])
         if Follows.objects.filter(
-            man=us,
-            follow_to=m
+            man=follower,
+            follow_to=user_to_follow
         ).exists():
             follow = Follows.objects.get(
-                man=us,
-                follow_to=m
+                man=follower,
+                follow_to=user_to_follow
             )
             follow.delete()
         else:
             real_time = timezone.now() - datetime.timedelta(days=1)
-            follow = Follows(man=us,
+            follow = Follows(man=follower,
                              created=real_time,
-                             follow_to=m)
+                             follow_to=user_to_follow)
             follow.save()
     return HttpResponseRedirect(reverse(
-        'insta:profile_page', kwargs={'idph': idph}))
+        'insta:profile_page', kwargs={'idph': id_user_to_follow}))
 
 
 def profile_page(request, idph):
