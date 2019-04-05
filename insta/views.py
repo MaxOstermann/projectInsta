@@ -151,65 +151,65 @@ def make_follow(request, id_user_to_follow):
 
 def profile_page(request, idph):
     if request.session.get('member_id', None):
-        m = InstaUser.objects.get(pk=int(idph))
-        us = InstaUser.objects.get(pk=request.session['member_id'])
-        if Follows.objects.filter(man=us, follow_to=m).exists():
+        user = InstaUser.objects.get(pk=int(idph))
+        activ_user = InstaUser.objects.get(pk=request.session['member_id'])
+        if Follows.objects.filter(man=activ_user, follow_to=user).exists():
             text_button = "Отписаться"
         else:
             text_button = "Подписаться"
-        if m == us:
+        if user == activ_user:
             text_button = "Так это же я сам!"
-        man_num = len(Follows.objects.filter(man=m))
-        follow_to_num = len(Follows.objects.filter(follow_to=m))
+        man_num = len(Follows.objects.filter(man=user))
+        follow_to_num = len(Follows.objects.filter(follow_to=user))
         context = {
-            'id': m.id,
-            'nickname_user': m.nickname_user,
-            'email_user': m.email_user,
-            'image_id': m.image_id.url,
+            'id': user.id,
+            'nickname_user': user.nickname_user,
+            'email_user': user.email_user,
+            'image_id': user.image_id.url,
             'text_button': text_button,
             'man_num': man_num,
             'follow_to_num': follow_to_num,
-            'images': Images.objects.filter(created_by=m)[:5]
+            'images': Images.objects.filter(created_by=user)[:5]
         }
         return render(request, 'insta/profile_page.html', context)
 
 
 def photo(request, idph):
     if request.session.get('member_id', None):
-        m = Images.objects.get(pk=int(idph))
-        us = InstaUser.objects.get(pk=request.session['member_id'])
+        photo_owner_user = Images.objects.get(pk=int(idph))
+        activ_user = InstaUser.objects.get(pk=request.session['member_id'])
         if Likes.objects.filter(
-                picture=m,
-                sender_id=us
+                picture=photo_owner_user,
+                sender_id=activ_user
         ).exists():
             text_button = "Мне больше не нравится"
         else:
             text_button = "Мне нравится"
-        liik = len(Likes.objects.filter(picture=m))
+        like_len = len(Likes.objects.filter(picture=photo_owner_user))
         form = CommentForm(request.POST or None, request.FILES or None, initial={
-                             "publication_id": m.id,
+                             "publication_id": photo_owner_user.id,
                              "date" : timezone.now() - datetime.timedelta(days=1),
-                             "sender_id" : us.id,
+                             "sender_id" : activ_user.id,
                          })
         form.fields['sender_id'].widget = forms.HiddenInput()
         form.fields['publication_id'].widget = forms.HiddenInput()
         form.fields['date'].widget = forms.HiddenInput()
         if request.method == "POST" and form.is_valid():
             form.save()
-        create = InstaUser.objects.get(pk=m.created_by.id).nickname_user
-        send_user = InstaUser.objects.get(pk=m.created_by.id).id
+        create = InstaUser.objects.get(pk=photo_owner_user.created_by.id).nickname_user
+        send_user = InstaUser.objects.get(pk=photo_owner_user.created_by.id).id
         context = {
-            'id' : m.id,
+            'id' : photo_owner_user.id,
             'created_by': create,
             'created_id': send_user,
-            'created_at': m.created_at,
-            'image_id' : m.image_id.url,
+            'created_at': photo_owner_user.created_at,
+            'image_id' : photo_owner_user.image_id.url,
             'form' : form,
-            'l_num': liik,
+            'l_num': like_len,
             'text_button': text_button,
         }
         try:
-            com = Comments.objects.filter(publication_id=m.id)#[:5]
+            com = Comments.objects.filter(publication_id=photo_owner_user.id)#[:5]
             context['comments'] = com
         except Comments.DoesNotExist:
             pass
@@ -234,10 +234,10 @@ def uspeh(request):
 def login(request):
     if request.method == "POST":
         try:
-            m = InstaUser.objects.get(nickname_user=request.POST['username'])
-            if m.password == request.POST['password']:
-                request.session['member_id'] = m.id
-                return HttpResponse("Вы авторизованы.")
+            login_user = InstaUser.objects.get(nickname_user=request.POST['username'])
+            if login_user.password == request.POST['password']:
+                request.session['member_id'] = login_user.id
+                return HttpResponseRedirect( reverse('insta:home'))
             else:
                 return HttpResponse("Неправильный пароль.")
         except InstaUser.DoesNotExist:
