@@ -68,6 +68,7 @@ def lout_api(request):
 
 
 def reg(request):
+    """регистрация"""
     form = OrderForm(request.POST or None, request.FILES or None)
 
     if request.method == "POST" and form.is_valid():
