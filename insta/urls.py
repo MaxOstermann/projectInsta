@@ -1,4 +1,4 @@
-from django.conf.urls import include, url
+from django.conf.urls import  url
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -18,7 +18,7 @@ urlpatterns = [
     url(r'^profile_page/(?P<idph>.+)/$', views.profile_page, name='profile_page'),
     url(r'^profile_list_api/', views.profile_list, name='profile_list_api'), #API
     url(r'^auth/', views.login, name='login'),
-    url(r'^auth_api/', views.login_api, name='login_api'), #API
+    url(r'^auth_api/', views.login_api, name='login_7api'), #API
     url(r'^lout/', views.lout, name='lout'),
     url(r'^lout_api/', views.lout_api, name='lout_api'), #API
     url(r'^exit/', views.log_out, name='exit'),

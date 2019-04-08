@@ -12,17 +12,17 @@ from rest_framework.decorators import api_view
 
 @api_view(['GET', 'POST'])
 def comments_list(request):
-
+    """метод для добавления или публикации комментария"""
     if request.method == 'GET':
         comments = Comments.objects.all()
         serializer = CommentsSerializer(comments, many=True)
         return Response(serializer.data)
 
     if request.method == 'POST':
-        us = InstaUser.objects.get(pk=request.session['member_id'])
+        user = InstaUser.objects.get(pk=request.session['member_id'])
         serializer = CommentsSerializer2(data=request.data)
         if serializer.is_valid():
-            serializer.save(sender_id=us,date=timezone.now() - datetime.timedelta(days=1))
+            serializer.save(sender_id=user,date=timezone.now() - datetime.timedelta(days=1))
             return Response('OK', status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
