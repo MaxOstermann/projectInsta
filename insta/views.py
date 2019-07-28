@@ -88,15 +88,17 @@ def addphoto(request):
     if request.session.get('member_id', None):
         m = InstaUser.objects.get(pk=request.session['member_id'])
         form = PhotoForm(request.POST or None, request.FILES or None, initial={
-                             "created_by": m.id
-                         })
+            "created_by": m.id
+            })
         form.fields['created_by'].widget = forms.HiddenInput()
         if request.method == "POST" and form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('insta:ura'))
 
-        return render(request, 'insta/addphoto.html',
-                      {"form": form, "user": m.nickname_user})
+        return render(request, 'insta/addphoto.html',  {
+            "form": form,
+            "user": m.nickname_user
+            })
     else:
         return HttpResponse("Чтобы выложить фото, зайдите на сайт")
 
@@ -114,15 +116,18 @@ def makelike(request, idph):
         if Likes.objects.filter(
             picture=image,
             sender_id=user
-        ).exists():
+            ).exists():
             like = Likes.objects.get(
                 picture=image,
                 sender_id=user
-            )
+                )
             like.delete()
         else:
-            like = Likes(picture=image, created=timezone.now() - datetime.timedelta(days=1),
-                         sender_id=user)
+            like = Likes(
+                picture=image,
+                created=timezone.now() - datetime.timedelta(days=1),
+                sender_id=user
+                )
             like.save()
     return HttpResponseRedirect(reverse('insta:photo', kwargs={'idph': idph}))
 
@@ -134,20 +139,24 @@ def make_follow(request, id_user_to_follow):
         if Follows.objects.filter(
             man=follower,
             follow_to=user_to_follow
-        ).exists():
+            ).exists():
             follow = Follows.objects.get(
                 man=follower,
                 follow_to=user_to_follow
-            )
+                )
             follow.delete()
         else:
             real_time = timezone.now() - datetime.timedelta(days=1)
-            follow = Follows(man=follower,
-                             created=real_time,
-                             follow_to=user_to_follow)
+            follow = Follows(
+                man=follower,
+                created=real_time,
+                follow_to=user_to_follow
+                )
             follow.save()
     return HttpResponseRedirect(reverse(
-        'insta:profile_page', kwargs={'idph': id_user_to_follow}))
+        'insta:profile_page',
+        kwargs={'idph': id_user_to_follow}
+        ))
 
 
 def profile_page(request, idph):
@@ -171,7 +180,7 @@ def profile_page(request, idph):
             'man_num': man_num,
             'follow_to_num': follow_to_num,
             'images': Images.objects.filter(created_by=user)[:5]
-        }
+            }
         return render(request, 'insta/profile_page.html', context)
 
 
@@ -188,10 +197,10 @@ def photo(request, idph):
             text_button = "Мне нравится"
         like_len = len(Likes.objects.filter(picture=photo_owner_user))
         form = CommentForm(request.POST or None, request.FILES or None, initial={
-                             "publication_id": photo_owner_user.id,
-                             "date" : timezone.now() - datetime.timedelta(days=1),
-                             "sender_id" : activ_user.id,
-                         })
+            "publication_id": photo_owner_user.id,
+            "date" : timezone.now() - datetime.timedelta(days=1),
+            "sender_id" : activ_user.id,
+            })
         form.fields['sender_id'].widget = forms.HiddenInput()
         form.fields['publication_id'].widget = forms.HiddenInput()
         form.fields['date'].widget = forms.HiddenInput()
@@ -208,7 +217,7 @@ def photo(request, idph):
             'form' : form,
             'l_num': like_len,
             'text_button': text_button,
-        }
+            }
         try:
             com = Comments.objects.filter(publication_id=photo_owner_user.id)#[:5]
             context['comments'] = com
@@ -224,7 +233,7 @@ def home(request):
     imgs = Images.objects.order_by('created_at')[:5]
     context = {
         'images': imgs,
-    }
+        }
     return render(request, 'insta/home.html', context)
 
 
