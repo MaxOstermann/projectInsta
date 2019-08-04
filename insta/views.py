@@ -7,66 +7,6 @@ from django.urls import reverse
 from image.models import Images
 from like.models import Likes
 from .serializers import *
-# from rest_framework import status
-# from rest_framework.response import Response
-# from rest_framework.decorators import api_view
-
-
-# @api_view(['GET', 'POST'])
-# def comments_list(request):
-#     """метод для добавления или публикации комментария"""
-#     if request.method == 'GET':
-#         comments = Comments.objects.all()
-#         serializer = CommentsSerializer(comments, many=True)
-#         return Response(serializer.data)
-#
-#     if request.method == 'POST':
-#         user = InstaUser.objects.get(pk=request.session['member_id'])
-#         serializer = CommentsSerializer2(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save(sender_id=user,date=timezone.now() - datetime.timedelta(days=1))
-#             return Response('OK', status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-# @api_view(['GET', 'POST'])
-# def profile_list(request):
-#
-#     if request.method == 'GET':
-#         users = InstaUser.objects.all()
-#         serializer = UserSerializer(users, many=True)
-#         return Response(serializer.data)
-#
-#     if request.method == 'POST':
-#         serializer = UserSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response('OK', status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#
-#
-# @api_view(['POST'])
-# def login_api(request):
-#     if request.method == "POST":
-#         try:
-#             m = InstaUser.objects.get(nickname_user=request.data['username'])
-#             if m.password == request.data['password']:
-#                 request.session['member_id'] = m.id
-#                 return Response("Вы авторизованы.")
-#             else:
-#                 return Response("Неправильный пароль.")
-#         except InstaUser.DoesNotExist:
-#             return Response("Ваши логин и пароль не соответствуют.")
-#
-#
-# @api_view(['GET'])
-# def lout_api(request):
-#     try:
-#         del request.session['member_id']
-#     except KeyError:
-#         pass
-#
-#     return Response("Вы вышли.")
 
 
 def reg(request):
@@ -83,7 +23,10 @@ def reg(request):
 
 
 def dele(request, idph):
-    if request.session.get('member_id', None) and Images.objects.get(pk=int(idph)).created_by.id == request.session['member_id']:
+    if (
+            request.session.get('member_id', None) and
+            Images.objects.get(pk=int(idph)).created_by.id == request.session['member_id']
+       ):
         m = Images.objects.get(pk=int(idph))    
         m.delete()
     return HttpResponseRedirect(reverse('insta:home'))
