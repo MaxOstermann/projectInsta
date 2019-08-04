@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 
 from . import views
 
-app_name = 'insta'
+app_name = 'like'
 urlpatterns = [
     url(r'^makelike/(?P<idph>.+)/$', views.makelike, name='makelike'),
 ]

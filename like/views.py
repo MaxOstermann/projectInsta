@@ -28,5 +28,5 @@ def makelike(request, idph):
                 sender_id=user
                 )
             like.save()
-    return HttpResponseRedirect(reverse('insta:photo', kwargs={'idph': idph}))
+    return HttpResponseRedirect(reverse('image:photo', kwargs={'idph': idph}))
 

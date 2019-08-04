@@ -93,6 +93,8 @@ def profile(request):
     if request.session.get('member_id', None):
         user = InstaUser.objects.get(pk=request.session['member_id'])
         return HttpResponseRedirect(reverse('insta:profile_page', kwargs={'idph': user.id}))
+    else:
+        return HttpResponseRedirect(reverse('insta:login'))
 
 
 def makelike(request, idph):
