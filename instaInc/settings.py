@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'easy_thumbnails',
     'image_cropping',
+    'image',
+    'comment',
+    'like',
 ]
 
 from easy_thumbnails.conf import Settings as thumbnail_settings

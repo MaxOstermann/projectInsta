@@ -28,12 +28,12 @@
     </div>
         <div class="row">
             <div class="col-md-6">
-              <form action="{% url 'insta:makelike' id %}" method="get">
+              <form action="{% url 'like:makelike' id %}" method="get">
                 <button class="btn btn-default btn-block">{{ text_button }}</button>
               </form>
             </div>
             <div class="col-md-6">
-              <form action="{% url 'insta:dele' id %}" method="get">
+              <form action="{% url 'image:dele' id %}" method="get">
                 <button class="btn btn-default btn-block">Удалить запись !</button>
               </form>
             </div>
