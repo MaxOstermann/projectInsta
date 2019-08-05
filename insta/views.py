@@ -123,10 +123,6 @@ def home(request):
     return render(request, 'insta/home.html', context)
 
 
-def uspeh(request):
-    return render(request, 'insta/uspeh.html')
-
-
 def login(request):
     if request.method == "POST":
         try:

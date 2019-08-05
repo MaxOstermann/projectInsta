@@ -28,7 +28,7 @@ def addphoto(request):
         form.fields['created_by'].widget = forms.HiddenInput()
         if request.method == "POST" and form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('insta:ura'))
+            return HttpResponseRedirect(reverse('image:photo', kwargs={'idph': form.instance.id}))
 
         return render(request, 'image/addphoto.html',  {
             "form": form,

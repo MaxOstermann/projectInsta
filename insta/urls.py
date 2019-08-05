@@ -13,7 +13,6 @@ urlpatterns = [
     url(r'^auth/', views.login, name='login'),
     url(r'^lout/', views.lout, name='lout'),
     url(r'^exit/', views.log_out, name='exit'),
-    url(r'^uspeh/', views.uspeh, name='ura'),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
