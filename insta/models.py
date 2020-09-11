@@ -1,8 +1,7 @@
 from django.db import models
-from image_cropping import ImageCroppingMixin
 
 
-class InstaUser(ImageCroppingMixin, models.Model):
+class InstaUser(models.Model):
     id = models.AutoField(primary_key=True)
     nickname_user = models.CharField(max_length=100, unique=True)
     email_user = models.CharField(max_length=100)

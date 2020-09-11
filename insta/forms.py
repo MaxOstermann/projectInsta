@@ -1,4 +1,4 @@
-from .models import InstaUser #, Images, Comments, Likes
+from .models import InstaUser
 from django import forms
 
 

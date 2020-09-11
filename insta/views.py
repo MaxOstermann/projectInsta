@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
-from .forms import *
+from django.views.generic import ListView
+from .forms import OrderForm
 import datetime
 from django.utils import timezone
 from django.urls import reverse

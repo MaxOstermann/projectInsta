@@ -1,8 +1,8 @@
 from django.db import models
-from image_cropping import ImageCroppingMixin
 from insta.models import InstaUser
 
-class Images(ImageCroppingMixin, models.Model):
+
+class Images(models.Model):
     id = models.AutoField(primary_key=True)
     created_by = models.ForeignKey(InstaUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
