@@ -4,6 +4,6 @@ django-bootstrap3==10.0.1
 django-image-cropping==1.1.0
 djangorestframework==3.11.2
 easy-thumbnails==2.5
-Pillow==8.2.0
+Pillow==10.0.1
 pytz==2018.4
 six==1.11.0
